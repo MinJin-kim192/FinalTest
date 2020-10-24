@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rv_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F3E254">
+
+
+    <ImageView
+        android:id="@+id/dice_rv_img"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/dice"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/user_value"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="유저 주사위 합 7"
+        app:layout_constraintLeft_toRightOf="@id/dice_rv_img"
+        app:layout_constraintRight_toLeftOf="@id/result_rv_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/com_value"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="컴퓨터 주사위 합 9"
+        app:layout_constraintBottom_toBottomOf="@id/user_value"
+        app:layout_constraintBottom_toTopOf="@id/play_date"
+        app:layout_constraintLeft_toRightOf="@id/dice_rv_img"
+        app:layout_constraintRight_toLeftOf="@id/result_rv_tv" />
+
+
+    <TextView
+        android:id="@+id/play_date"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="0000-00-00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/dice_rv_img"
+        app:layout_constraintRight_toLeftOf="@id/result_rv_tv" />
+
+
+    <TextView
+        android:id="@+id/result_rv_tv"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:gravity="center_vertical|center"
+        android:text="승"
+        android:textSize="30sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/under_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#747474"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

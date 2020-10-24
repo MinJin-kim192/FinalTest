@@ -1,26 +1,43 @@
 package com.minjin.test.finalTest
 
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.minjin.test.finalTest.dbModel.AppDatabase
+import com.minjin.test.finalTest.dbModel.PlayResult
 import kotlinx.android.synthetic.main.activity_play.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class PlayActivity : AppCompatActivity() {
 
 
     var scoreCheck = false
+    val currentDateTime = Calendar.getInstance().time
 
+    var db: AppDatabase? = null
+    var savedDb : List<PlayResult>? = null
+
+    var resultTxt = "0"
+    var user1: Int = 0
+    var user2: Int = 0
+    var com1: Int = 0
+    var com2: Int = 0
+
+    var gameResult = mutableListOf<PlayResult>()
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
 
         val random = Random()
-        var user1: Int = 0
-        var user2: Int = 0
 
-        var com1: Int = 0
-        var com2: Int = 0
 
         dice_img.setOnClickListener {
 
@@ -45,17 +62,42 @@ class PlayActivity : AppCompatActivity() {
 
         save.setOnClickListener {
 
-            if(!scoreCheck){
-                Toast.makeText(applicationContext,"게임을 플레이 후 저장해주세요", Toast.LENGTH_SHORT).show()
+            if (!scoreCheck) {
+                Toast.makeText(applicationContext, "게임을 플레이 후 저장해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 scoreCheck = false
+
+                val dateFormat =
+                    SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.KOREA).format(currentDateTime)
+
+                db = AppDatabase.getInstance(this)
+                savedDb = db!!.resultDAO().getAll()
+                if (savedDb!!.isNotEmpty()) {
+                    gameResult.addAll(savedDb!!)
+                }
+
+
+                val resultSave = PlayResult(0 ,resultTxt, dateFormat, (user1 + user2), (com1 + com2))
+                db?.resultDAO()?.insertAll(resultSave)
+                gameResult.add(resultSave)
+
+
                 Toast.makeText(applicationContext, "저장되었습니다", Toast.LENGTH_SHORT).show()
-                // 저장 해야 할 것
-                // 주사위 각각의 값
-                // 승패
-                // 오늘 날짜
-                
+
+                Log.d("로그", "디비 조회 ${gameResult[0].result}")
+                Log.d("로그", "디비 조회 ${gameResult[0].user_value}")
+                Log.d("로그", "디비 조회 ${gameResult[0].com_value}")
+                Log.d("로그", "디비 조회 ${gameResult[0].date}")
+
             }
+
+        }
+
+
+        next.setOnClickListener {
+
+            intent = Intent(this, ResultActivity::class.java)
+            startActivity(intent)
 
         }
 
@@ -68,18 +110,20 @@ class PlayActivity : AppCompatActivity() {
             user > com -> {
 
                 result_tv.text = "유저 승리"
+                resultTxt = "승"
 
             }
             user < com -> {
 
                 result_tv.text = "컴퓨터 승리"
+                resultTxt = "패"
 
 
             }
             else -> {
 
                 result_tv.text = "무승부"
-
+                resultTxt = "무"
             }
         }
 
